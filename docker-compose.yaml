@@ -1,0 +1,47 @@
+services:
+  prom:
+    restart: always
+    image: prom/prometheus:v2.41.0
+    command: --config.file="/etc/prometheus/prometheus.yaml"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prom_data:/prometheus
+    ports:
+      - 9090:9090
+
+  alertmanager:
+    restart: always
+    image: prom/alertmanager:v0.25.0
+    command: --config.file="/etc/alertmanager/alertmanager.yaml"
+    volumes:
+      - ./alertmanager:/etc/alertmanager:rw
+      - alertmanager_data:/alertmanager
+    ports:
+      - 9093:9093
+
+  wasd-exporter:
+    restart: always
+    image: bulbawarrior/prometheus-wasd-exporter
+    ports:
+      - 9420:9420
+    volumes:
+      - ./wasd_channels.txt:/channels.txt
+
+  twitch-exporter:
+    restart: always
+    image: damoun/twitch-exporter:master
+    command: --twitch.client-id=$CLIENT_ID --twitch.access-token=$ACCESS_TOKEN --twitch.channel=DawgDebik --twitch.channel=thebausffs
+    ports:
+      - 9184:9184
+
+  discord-webhook:
+    restart: always
+    image: bulbawarrior/alertmanager-discord-webhook
+    volumes:
+      - ./discord-config.json:/config.json
+    ports:
+      - 9094:9094
+
+volumes:
+  prom_data:
+  alertmanager_data:

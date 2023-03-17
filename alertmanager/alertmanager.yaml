@@ -1,0 +1,18 @@
+---
+route:
+  receiver: dimka
+  repeat_interval: 1m
+  routes:
+    - receiver: dimka
+      continue: true
+      matchers:
+        - podryb=yes
+      repeat_interval: 10m
+
+    - receiver: dimka
+      repeat_interval: 1m
+
+receivers:
+  - name: dimka
+    webhook_configs:
+      - url: http://discord-webhook:9094/dimka

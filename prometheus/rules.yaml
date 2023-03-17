@@ -1,0 +1,13 @@
+groups:
+  - name: main
+    rules:
+      - alert: WasdChannelOnline
+        expr: delta(channel_is_live[5m]) > 0
+        labels:
+          podryb: yes
+        annotations:
+          description: "{{ $labels.channel }} подрубил"
+      # - alert: ChannelOffline
+      #   expr: channel_is_live == 0
+      #   annotations:
+      #     description: "{{ $labels.channel }} не стримит"

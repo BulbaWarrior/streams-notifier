@@ -1,0 +1,22 @@
+global:
+  scrape_interval: "30s"
+  scrape_timeout: "20s"
+
+rule_files:
+  - rules.yaml
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+scrape_configs:
+  - job_name: wasd
+    static_configs:
+      - targets:
+          - wasd-exporter:9420
+
+  - job_name: twitch
+    static_configs:
+      - targets:
+          - twitch-exporter:9184
